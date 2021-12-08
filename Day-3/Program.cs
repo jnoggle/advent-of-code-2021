@@ -9,11 +9,37 @@ namespace Day1
         {
             string[] input = File.ReadAllLines("inputs.txt");
 
+            int[] bit_counts = mostCommonBits(input);
+
+            int gamma_rate = 0b0;
+            int epsilon_rate = 0b0;
+
+            foreach (int count in bit_counts)
+            {
+                gamma_rate <<= 1;
+                epsilon_rate <<= 1;
+
+                if (count == 1)
+                {
+                    gamma_rate++;
+                }
+                else
+                {
+                    epsilon_rate++;
+                }
+            }
+
+            Console.WriteLine("Answer to part 1: " + (gamma_rate * epsilon_rate));
+        }
+
+        static int[] mostCommonBits(string[] input)
+        {
             int[] bit_counts = new int[12];
+            int number_of_bits = input[0].Length;
 
             foreach (string line in input)
             {
-                for (int i = 0; i < line.Length; i++)
+                for (int i = 0; i < number_of_bits; i++)
                 {
                     if (line[i] == '1')
                     {
@@ -26,25 +52,17 @@ namespace Day1
                 }
             }
 
-            int gamma_rate = 0b0;
-            int epsilon_rate = 0b0;
+            int[] common_bits = new int[number_of_bits];
 
-            foreach (int count in bit_counts)
+            for (int i = 0; i < number_of_bits; i++)
             {
-                gamma_rate <<= 1;
-                epsilon_rate <<= 1;
-
-                if (count > 0)
+                if (bit_counts[i] > 0)
                 {
-                    gamma_rate++;
-                }
-                else
-                {
-                    epsilon_rate++;
+                    common_bits[i] = 1;
                 }
             }
 
-            Console.WriteLine("Answer to part 1: " + (gamma_rate * epsilon_rate));
+            return common_bits;
         }
     }
 }
